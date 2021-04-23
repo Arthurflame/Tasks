@@ -28,7 +28,6 @@ phases:
       - export PULL_NUM=$(echo $CODEBUILD_WEBHOOK_TRIGGER | awk 'BEGIN{FS="/"} {print $2}')
       - export BASE_REF=$(echo $CODEBUILD_WEBHOOK_BASE_REF | awk 'BEGIN{FS="/"} {print $3}')
       - sonar-scanner -Dsonar.organization="arthurflame" -Dsonar.projectKey="Task-test" -Dsonar.login=$LOGIN -Dsonar.host.url="https://sonarcloud.io" -Dsonar.pullrequest.base=$BASE_REF -Dsonar.pullrequest.branch=$CODEBUILD_WEBHOOK_HEAD_REF -Dsonar.pullrequest.key=$PULL_NUM -Dsonar.pullrequest.provider=GitHub -Dsonar.pullrequest.github.repository=arthurflame/Tasks
-#       - sonar-scanner -Dsonar.organization="arthurflame" -Dsonar.projectKey="Task-test" -Dsonar.login=$LOGIN -Dsonar.host.url="https://sonarcloud.io"
 
       - sleep 5
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json

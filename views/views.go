@@ -108,26 +108,3 @@ func ShowCategoryFunc(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func NotShowCategoryFunc(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" && sessions.IsLoggedIn(r) {
-		category := r.URL.Path[len("/category/"):]
-		username := sessions.GetCurrentUserName(r)
-		context, err := db.GetTasks(username, "", category)
-		categories := db.GetCategories(username)
-
-		if err != nil {
-			http.Redirect(w, r, "/", http.StatusInternalServerError)
-		}
-		if message != "" {
-			context.Message = message
-		}
-		context.CSRFToken = "abcd"
-		context.Categories = categories
-		message = ""
-		expiration := time.Now().Add(365 * 24 * time.Hour)
-		cookie := http.Cookie{Name: "csrftoken", Value: "abcd", Expires: expiration}
-		http.SetCookie(w, &cookie)
-		homeTemplate.Execute(w, context)
-	}
-}
-
